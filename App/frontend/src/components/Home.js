@@ -10,8 +10,23 @@ function Home({ recipes, userIngredients }) {
   const [quickSuggestions, setQuickSuggestions] = useState([]);
   const [loadingLeftovers, setLoadingLeftovers] = useState(false);
   
-  // Calculate scores for all recipes and sort
-  const recipesWithScores = recipes.map(recipe => {
+  // Remove duplicates from recipes array based on RecipeName
+  const uniqueRecipes = recipes.reduce((unique, recipe) => {
+    // Check if we already have this recipe name in our unique array
+    const existingRecipe = unique.find(
+      r => r.RecipeName === recipe.RecipeName
+    );
+    
+    // If it doesn't exist yet, add it to our unique recipes
+    if (!existingRecipe) {
+      unique.push(recipe);
+    }
+    
+    return unique;
+  }, []);
+  
+  // Calculate scores for all unique recipes and sort
+  const recipesWithScores = uniqueRecipes.map(recipe => {
     const healthScore = calculateHealthScore(recipe);
     const wasteScore = userIngredients && userIngredients.length > 0 
       ? calculateWasteReduction(userIngredients, recipe.Ingredients) 
@@ -39,8 +54,17 @@ function Home({ recipes, userIngredients }) {
       try {
         const result = await fetchRecipes(selectedIngredient);
         
+        // Remove duplicates from API response
+        const uniqueResults = result.reduce((unique, recipe) => {
+          const existingRecipe = unique.find(r => r.RecipeName === recipe.RecipeName);
+          if (!existingRecipe) {
+            unique.push(recipe);
+          }
+          return unique;
+        }, []);
+        
         // Filter for only beginner-friendly, quick recipes
-        const easyRecipes = result.filter(recipe => {
+        const easyRecipes = uniqueResults.filter(recipe => {
           return isBeginner(recipe) && 
                  (recipe.CookTimeInMins <= 20 || !recipe.CookTimeInMins) && 
                  recipe.Ingredients.split(',').length < 7;
@@ -60,7 +84,7 @@ function Home({ recipes, userIngredients }) {
     fetchQuickSuggestions();
   }, [selectedIngredient]);
 
-  if (!recipes || !recipes.length) {
+  if (!uniqueRecipes || !uniqueRecipes.length) {
     return <p className="no-recipes">No recipes found. Try different ingredients!</p>;
   }
 
