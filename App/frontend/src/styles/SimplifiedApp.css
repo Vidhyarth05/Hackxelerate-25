@@ -1,0 +1,198 @@
+/* Main Structure */
+.simplified-app {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Hero Section styles - combining elements from Landing and Login */
+  .app-hero {
+    height: 100vh;
+    background: linear-gradient(135deg, #a5d6a7, #2e7d32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    background-blend-mode: overlay;
+  }
+  
+  .app-hero-content {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  .app-hero h1 {
+    font-size: 4rem;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hero-quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #5d4037;
+    margin-bottom: 2rem;
+  }
+  
+  .scroll-prompt {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #f9f5eb;
+    background-color: rgba(93, 64, 55, 0.7);
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .scroll-prompt:hover {
+    background-color: #5d4037;
+    transform: translateX(-50%) translateY(-5px);
+  }
+  
+  .scroll-arrow {
+    font-size: 1.5rem;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Search Section styles */
+  .search-section {
+    min-height: 100vh;
+    background-color: #f5f5dc;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .search-section.visible {
+    opacity: 1;
+  }
+  
+  /* App Header */
+  .app-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .app-header h1 {
+    color: #2e7d32;
+    margin: 0;
+  }
+  
+  /* Search Container - from RecipeFinder */
+  .search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .search-container input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .search-btn {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .search-btn:hover {
+    background-color: #1b5e20;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  /* Donation Section - from RecipeFinder */
+  .donation-section {
+    margin-top: 50px;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .donation-section h2 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+  }
+  
+  .toggle-donation-btn {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 20px 0;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .toggle-donation-btn:hover {
+    background-color: #1b5e20;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .app-hero h1 {
+      font-size: 3rem;
+    }
+    
+    .hero-quote {
+      font-size: 1.2rem;
+    }
+    
+    .search-container {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .app-hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero-quote {
+      font-size: 1rem;
+    }
+  }
