@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Recipe from './Recipes';
 import { calculateHealthScore, calculateWasteReduction } from '../utils/helpers';
-import '../styles/Home.css'; // We'll create this file next
+import '../styles/Home.css';
 
 function Home({ recipes, userIngredients }) {
   const [selectedIngredient, setSelectedIngredient] = useState('');
@@ -32,7 +32,7 @@ function Home({ recipes, userIngredients }) {
 
   return (
     <div>
-      <div className="recipes-grid">
+      <div className="recipes-container">
         {recipesWithScores.slice(0, visibleCount).map((recipe, index) => (
           <Recipe 
             key={index} 
