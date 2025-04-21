@@ -1,198 +1,316 @@
-/* Main Structure */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap');
+
+/* Base */
+body {
+  font-family: 'Playfair Display', serif;
+}
 .simplified-app {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Hero Section */
+.app-hero {
+  height: 100vh;
+  background: linear-gradient(
+      rgba(42, 96, 65, 0.8), 
+      rgba(76, 175, 80, 0.6)
+    ),
+    url('/public/Title.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.app-hero-content {
+  max-width: 800px;
+  padding: 20px;
+}
+
+/* Enhanced Title */
+.app-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: white;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  margin-top: -30px;
+}
+
+/* Tamil Quote */
+.hero-quote-tamil {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-style: italic;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  margin-top: -15px;
+}
+
+/* English Quote */
+.hero-quote {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  font-style: italic;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  margin-top: -10px;
+}
+
+/* Scroll Prompt Styling */
+.scroll-prompt {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  animation: fadeInUp 2s ease-in-out;
+}
+
+/* Scroll Arrow Smooth Float */
+.scroll-arrow {
+  font-size: 24px;
+  margin-top: 5px;
+  animation: float 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
   }
-  
-  /* Hero Section styles - combining elements from Landing and Login */
-  .app-hero {
-    height: 100vh;
-    background: linear-gradient(135deg, #a5d6a7, #2e7d32);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    background-blend-mode: overlay;
+  50% {
+    transform: translateY(10px);
   }
-  
-  .app-hero-content {
-    padding: 2rem;
-    background-color: rgba(255, 255, 255, 0.85);
-    border-radius: 10px;
-    max-width: 600px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  }
-  
-  .app-hero h1 {
-    font-size: 4rem;
-    color: #2e7d32;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .hero-quote {
-    font-size: 1.5rem;
-    font-style: italic;
-    color: #5d4037;
-    margin-bottom: 2rem;
-  }
-  
-  .scroll-prompt {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #f9f5eb;
-    background-color: rgba(93, 64, 55, 0.7);
-    padding: 0.8rem 1.5rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .scroll-prompt:hover {
-    background-color: #5d4037;
-    transform: translateX(-50%) translateY(-5px);
-  }
-  
-  .scroll-arrow {
-    font-size: 1.5rem;
-    animation: bounce 2s infinite;
-  }
-  
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-10px);
-    }
-    60% {
-      transform: translateY(-5px);
-    }
-  }
-  
-  /* Search Section styles */
-  .search-section {
-    min-height: 100vh;
-    background-color: #f5f5dc;
-    padding: 2rem;
+}
+
+@keyframes fadeInUp {
+  from {
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transform: translateY(20px);
   }
-  
-  .search-section.visible {
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* App Header */
-  .app-header {
-    text-align: center;
-    margin-bottom: 30px;
+}
+
+/* Search Section */
+.search-section {
+  padding: 40px 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.search-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  color: #2a6041;
+  margin-bottom: 10px;
+}
+
+.app-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.search-container {
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.tag-input-container {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.tag-input-container input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 6px 0 0 6px;
+  font-size: 16px;
+}
+
+.add-tag-btn {
+  padding: 0 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.ingredient-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.ingredient-tag {
+  background-color: #e6f7ff;
+  color: #0066cc;
+  padding: 6px 12px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.remove-tag {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.search-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #2a6041;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+  background-color: #1d4b2f;
+}
+
+.search-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Donation Section */
+.donation-section {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.donation-section h2 {
+  font-size: 1.8rem;
+  color: #2a6041;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.donation-section p {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.toggle-donation-btn {
+  display: block;
+  width: 200px;
+  margin: 0 auto;
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.toggle-donation-btn:hover {
+  background-color: #45a049;
+}
+
+/* Footer */
+.app-footer {
+  background-color: #2a6041;
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  margin-top: 15px;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-hero h1 {
+    font-size: 3rem;
   }
-  
+
+  .hero-quote-tamil {
+    font-size: 1.5rem;
+  }
+
+  .hero-quote {
+    font-size: 1.2rem;
+  }
+
   .app-header h1 {
-    color: #2e7d32;
-    margin: 0;
+    font-size: 2rem;
   }
-  
-  /* Search Container - from RecipeFinder */
-  .search-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+@media (max-width: 480px) {
+  .app-hero h1 {
+    font-size: 2.5rem;
   }
-  
-  .search-container input {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+
+  .hero-quote-tamil {
+    font-size: 1.2rem;
   }
-  
-  .search-btn {
-    background-color: #2e7d32;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 0 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
+
+  .hero-quote {
+    font-size: 1rem;
   }
-  
-  .search-btn:hover {
-    background-color: #1b5e20;
-  }
-  
-  .loading {
-    text-align: center;
-    padding: 40px;
-    font-size: 18px;
-    color: #666;
-  }
-  
-  /* Donation Section - from RecipeFinder */
-  .donation-section {
-    margin-top: 50px;
-    padding: 30px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .donation-section h2 {
-    color: #2e7d32;
-    margin-bottom: 15px;
-  }
-  
-  .toggle-donation-btn {
-    background-color: #2e7d32;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    margin: 20px 0;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .toggle-donation-btn:hover {
-    background-color: #1b5e20;
-  }
-  
-  /* Media queries for responsiveness */
-  @media (max-width: 768px) {
-    .app-hero h1 {
-      font-size: 3rem;
-    }
-    
-    .hero-quote {
-      font-size: 1.2rem;
-    }
-    
-    .search-container {
-      flex-direction: column;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .app-hero h1 {
-      font-size: 2.5rem;
-    }
-    
-    .hero-quote {
-      font-size: 1rem;
-    }
-  }
+}

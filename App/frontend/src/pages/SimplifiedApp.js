@@ -11,6 +11,7 @@ function SimplifiedApp() {
   const [userIngredients, setUserIngredients] = useState([]);
   const [showDonationForm, setShowDonationForm] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [ingredientTags, setIngredientTags] = useState([]);
   const searchSectionRef = useRef(null);
 
   // Handle scroll events
@@ -37,22 +38,35 @@ function SimplifiedApp() {
     }
   };
 
+  const addIngredientTag = () => {
+    if (!ingredientInput.trim()) return;
+    
+    const newTag = ingredientInput.trim();
+    if (!ingredientTags.includes(newTag)) {
+      setIngredientTags([...ingredientTags, newTag]);
+    }
+    setIngredientInput('');
+  };
+
+  const removeIngredientTag = (tag) => {
+    setIngredientTags(ingredientTags.filter(t => t !== tag));
+  };
+
   const searchRecipes = async () => {
-    if (!ingredientInput) return;
+    if (!ingredientTags.length) return;
     
     setLoading(true);
+    setUserIngredients(ingredientTags); // Store user ingredients for reuse suggestions
     
-    // Split by commas and clean up
-    const ingredients = ingredientInput
-      .split(',')
-      .map(i => i.trim())
-      .filter(i => i.length > 0);
-    
-    setUserIngredients(ingredients); // Store user ingredients for reuse suggestions
-    
-    const result = await fetchRecipes(ingredients);
+    const result = await fetchRecipes(ingredientTags.join(','));
     setRecipes(result);
     setLoading(false);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      addIngredientTag();
+    }
   };
 
   return (
@@ -60,10 +74,11 @@ function SimplifiedApp() {
       {/* Hero Section */}
       <div className="app-hero">
         <div className="app-hero-content">
-          <h1>SustainEat</h1>
-          <p className="hero-quote">"Food waste isn't waste until we waste it."</p>
+          <h1>UyirUnavu</h1>
+          <p className="hero-quote-tamil">"பாத்தூண் மரீஇ யவனைப் பசியென்னுந்தீப்பிணி தீண்ட லறிது"</p>
+          <p className="hero-quote">"Even as one who has taken food becomes faint from disease, so does the hungry man grow faint from the fierce fire of starvation."</p>
           <div className="scroll-prompt" onClick={scrollToSearch}>
-            <p>Swipe down to find recipes</p>
+            <p>Scroll down to find recipes</p>
             <div className="scroll-arrow">↓</div>
           </div>
         </div>
@@ -72,18 +87,40 @@ function SimplifiedApp() {
       {/* Recipe Search Section */}
       <div ref={searchSectionRef} className={`search-section ${scrolled ? 'visible' : ''}`}>
         <header className="app-header">
-          <h1>SustainEat Recipe Finder</h1>
+          <h1>Lets Start Cooking !</h1>
+          <p>Find recipes using what you already have</p>
         </header>
         
         <div className="search-container">
-          <input
-            type="text"
-            placeholder="Enter ingredients (comma separated)..."
-            value={ingredientInput}
-            onChange={(e) => setIngredientInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && searchRecipes()}
-          />
-          <button onClick={searchRecipes} className="search-btn">Find Recipes</button>
+          <div className="tag-input-container">
+            <input
+              type="text"
+              placeholder="Type an ingredient and press Enter..."
+              value={ingredientInput}
+              onChange={(e) => setIngredientInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button onClick={addIngredientTag} className="add-tag-btn">+</button>
+          </div>
+          
+          {ingredientTags.length > 0 && (
+            <div className="ingredient-tags">
+              {ingredientTags.map((tag, index) => (
+                <div key={index} className="ingredient-tag">
+                  {tag}
+                  <span onClick={() => removeIngredientTag(tag)} className="remove-tag">×</span>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <button 
+            onClick={searchRecipes} 
+            className="search-btn"
+            disabled={ingredientTags.length === 0}
+          >
+            Find Recipes
+          </button>
         </div>
         
         {loading ? (
@@ -110,6 +147,13 @@ function SimplifiedApp() {
           </>
         )}
       </div>
+      
+      {/* Footer Section */}
+      <footer className="app-footer">
+        <div className="footer-content">
+          <p>© 2025 UyirUnavu - Reducing Food Waste, One Recipe at a Time❤️</p>
+        </div>
+      </footer>
     </div>
   );
 }

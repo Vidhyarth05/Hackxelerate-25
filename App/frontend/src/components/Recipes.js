@@ -7,15 +7,18 @@ function Recipe({ recipe, userIngredients }) {
   const [showDetail, setShowDetail] = useState(false);
   
   // Calculate scores and tags
-  const healthScore = calculateHealthScore(recipe);
+  const healthScore = recipe.healthScore || calculateHealthScore(recipe);
   const dietTag = getDietTag(recipe);
   const wasteScore = userIngredients && userIngredients.length > 0 
     ? calculateWasteReduction(userIngredients, recipe.Ingredients) 
     : null;
   
+  // Check if this is a leftover recipe
+  const isLeftoverRecipe = recipe.isLeftoverRecipe || false;
+  
   return (
     <>
-      <div className="recipe-card">
+      <div className={`recipe-card ${isLeftoverRecipe ? 'leftover-recipe' : ''}`}>
         <div className="recipe-image">
           {/* Placeholder image - in a real app, you'd use the recipe's actual image */}
           <div className="placeholder-img">🍽️</div>
@@ -29,6 +32,7 @@ function Recipe({ recipe, userIngredients }) {
           <span className={`tag health-score score-${Math.floor(healthScore/20)}`}>
             {healthScore}/100
           </span>
+          {isLeftoverRecipe && <span className="tag leftover">Leftover</span>}
         </div>
         
         <div className="cook-time">
@@ -49,6 +53,7 @@ function Recipe({ recipe, userIngredients }) {
           healthScore={healthScore}
           dietTag={dietTag}
           wasteScore={wasteScore}
+          isLeftoverRecipe={isLeftoverRecipe}
           onClose={() => setShowDetail(false)}
         />
       )}
