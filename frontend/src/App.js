@@ -1,42 +1,40 @@
-import React, { useState } from 'react';
-import { fetchRecipes } from './utils/api';
-import Home from './components/Home';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
+import RecipeFinder from './pages/RecipeFinder';
 import './App.css';
 
 function App() {
-  const [ingredient, setIngredient] = useState('');
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const searchRecipes = async () => {
-    if (!ingredient) return;
-    setLoading(true);
-    
-    try {
-      const result = await fetchRecipes(ingredient);
-      // result is already the recipes array due to our change in api.js
-      setRecipes(result);
-    } catch (err) {
-      console.error('Error:', err);
-      setRecipes([]);
-    } finally {
-      setLoading(false);
-    }
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  // This function can be called from Login component
+  const updateLoginStatus = () => {
+    const userLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(userLoggedIn);
   };
-
+  
+  useEffect(() => {
+    // Check if user is logged in on initial load
+    updateLoginStatus();
+  }, []);
+  
   return (
-    <div className="App">
-      <h1>Recipe Finder</h1>
-      <input
-        type="text"
-        placeholder="Enter an ingredient..."
-        value={ingredient}
-        onChange={(e) => setIngredient(e.target.value)}
-        onKeyPress={(e) => e.key === 'Enter' && searchRecipes()}
-      />
-      <button onClick={searchRecipes}>Search</button>
-      {loading ? <p>Loading...</p> : <Home recipes={recipes} />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={
+          <Login updateLoginStatus={updateLoginStatus} />
+        } />
+        <Route path="/register" element={
+          <Login updateLoginStatus={updateLoginStatus} />
+        } />
+        <Route 
+          path="/recipes" 
+          element={isLoggedIn ? <RecipeFinder /> : <Navigate to="/login" />} 
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

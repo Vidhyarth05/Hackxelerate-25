@@ -32,26 +32,67 @@ const db = new sqlite3.Database('./recipe.sqlite', (err) => {
 });
 
 // Recipe search route 
+// In app.js - update the recipe search route
 app.get('/recipes', (req, res) => {
-  const ingredient = req.query.q;
+  const ingredientQuery = req.query.q;
 
-  if (!ingredient) {
+  if (!ingredientQuery) {
     return res.status(400).json({ message: 'No ingredient provided' });
   }
-
-  const query = `SELECT * FROM recipe WHERE Ingredients LIKE ?`;
-
-  db.all(query, [`%${ingredient}%`], (err, rows) => {
+  
+  // Split the query string by commas to get individual ingredients
+  const ingredients = ingredientQuery.split(',').map(i => i.trim().toLowerCase());
+  
+  // Get all recipes
+  db.all("SELECT * FROM recipe", [], (err, allRecipes) => {
     if (err) {
       console.error('Error querying database:', err);
       return res.status(500).json({ message: 'Internal server error' });
     }
+    
+    // Filter recipes that contain ALL of the user's ingredients
+    const matchingRecipes = allRecipes.filter(recipe => {
+      const recipeIngredients = recipe.Ingredients.toLowerCase();
+      // Check if ALL requested ingredients are in this recipe
+      return ingredients.every(ingredient => 
+        recipeIngredients.includes(ingredient)
+      );
+    });
 
-    if (rows.length === 0) {
+    if (matchingRecipes.length === 0) {
       return res.json({ message: 'No recipes found', recipes: [] });
     }
 
-    return res.json({ message: "Here's a list of recipes!", recipes: rows });
+    return res.json({ message: "Here's a list of recipes!", recipes: matchingRecipes });
+  });
+});
+
+// In your Express app.js - add this route
+app.post('/donate', (req, res) => {
+  const { foodItem, contactInfo, notes } = req.body;
+  
+  // Create donations table if it doesn't exist
+  db.run(`CREATE TABLE IF NOT EXISTS donations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    foodItem TEXT,
+    contactInfo TEXT,
+    notes TEXT,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating donations table:', err);
+      return res.status(500).json({ error: 'Failed to create donations table' });
+    }
+    
+    // Insert the donation
+    db.run(`INSERT INTO donations (foodItem, contactInfo, notes) VALUES (?, ?, ?)`, 
+      [foodItem, contactInfo, notes], (err) => {
+        if (err) {
+          console.error('Error adding donation:', err);
+          return res.status(500).json({ error: 'Failed to add donation' });
+        }
+        res.json({ message: "Donation added successfully!" });
+      });
   });
 });
 
