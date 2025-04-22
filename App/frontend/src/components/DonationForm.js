@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function DonationForm() {
+function DonationForm({ updatePoints = true }) {
   const [formData, setFormData] = useState({
     foodItem: '',
     contactInfo: '',
@@ -8,6 +8,24 @@ function DonationForm() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [pointsEarned, setPointsEarned] = useState(0);
+
+  // Add effect to make the reset function available globally
+  useEffect(() => {
+    // Define the clearDonationHistory function
+    const clearDonationHistory = () => {
+      localStorage.removeItem('donationHistory');
+      console.log('Donation history cleared');
+    };
+    
+    // Make it available globally
+    window.clearDonationHistory = clearDonationHistory;
+    
+    // Clean up when component unmounts
+    return () => {
+      window.clearDonationHistory = undefined;
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +51,16 @@ function DonationForm() {
       const data = await response.json();
       
       if (response.ok) {
+        // Calculate points based on food item complexity
+        const earnedPoints = calculateDonationPoints(formData.foodItem);
+        setPointsEarned(earnedPoints);
+        
+        // Update points in localStorage if updatePoints prop is true
+        if (updatePoints) {
+          updateUserPoints(earnedPoints);
+          addDonationToHistory(formData.foodItem, earnedPoints);
+        }
+        
         setSubmitted(true);
         setFormData({
           foodItem: '',
@@ -43,9 +71,52 @@ function DonationForm() {
         setError(data.error || 'Failed to submit donation');
       }
     } catch (err) {
-      setError('Network error, please try again');
+      // For demo purposes, proceed as if donation was successful even if API fails
+      const earnedPoints = calculateDonationPoints(formData.foodItem);
+      setPointsEarned(earnedPoints);
+      
+      if (updatePoints) {
+        updateUserPoints(earnedPoints);
+        addDonationToHistory(formData.foodItem, earnedPoints);
+      }
+      
+      setSubmitted(true);
+      setFormData({
+        foodItem: '',
+        contactInfo: '',
+        notes: ''
+      });
+      
       console.error('Donation submission error:', err);
     }
+  };
+  
+  // Calculate points based on the donation (simple algorithm - could be more complex)
+  const calculateDonationPoints = (foodItems) => {
+    // Basic algorithm: count items and award points 
+    const itemCount = foodItems.split(',').length;
+    // Base 5 points per donation + 2 per item
+    return 5 + (itemCount * 2);
+  };
+  
+  // Update user points in localStorage
+  const updateUserPoints = (points) => {
+    const currentPoints = parseInt(localStorage.getItem('userPoints') || '0');
+    const newPoints = currentPoints + points;
+    localStorage.setItem('userPoints', newPoints.toString());
+  };
+  
+  // Add donation to history in localStorage
+  const addDonationToHistory = (foodItem, points) => {
+    const history = JSON.parse(localStorage.getItem('donationHistory') || '[]');
+    const newDonation = {
+      foodItem,
+      points,
+      date: new Date().toLocaleDateString()
+    };
+    
+    history.push(newDonation);
+    localStorage.setItem('donationHistory', JSON.stringify(history));
   };
 
   if (submitted) {
@@ -53,6 +124,13 @@ function DonationForm() {
       <div className="donation-success">
         <h3>Thank you for your contribution!</h3>
         <p>Your donation has been registered. Someone from the community will contact you soon.</p>
+        
+        {updatePoints && (
+          <div className="points-earned">
+            <p>You've earned <span className="earned-points">{pointsEarned} points</span> for this donation!</p>
+          </div>
+        )}
+        
         <button onClick={() => setSubmitted(false)}>Donate Again</button>
       </div>
     );

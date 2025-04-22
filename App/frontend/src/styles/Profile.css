@@ -1,0 +1,248 @@
+/* Profile Styles */
+.profile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  
+  .profile-container {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+  }
+  
+  .profile-header h2 {
+    margin: 0;
+    color: #2a6041;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+  }
+  
+  .close-btn:hover {
+    color: #000;
+  }
+  
+  .profile-content {
+    padding: 20px;
+  }
+  
+  .profile-section {
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    background-color: #2a6041;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+  
+  .user-details h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .reward-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .reward-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+  
+  .beginner {
+    background-color: #e6f7ff;
+    color: #0066cc;
+  }
+  
+  .bronze {
+    background-color: #fff0e6;
+    color: #cc5200;
+  }
+  
+  .silver {
+    background-color: #f0f0f0;
+    color: #666666;
+  }
+  
+  .gold {
+    background-color: #fff9e6;
+    color: #cc9900;
+  }
+  
+  .points-display {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .points-value {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2a6041;
+  }
+  
+  .points-label {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .donation-history h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .no-donations {
+    color: #666;
+    font-style: italic;
+  }
+  
+  .donation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .donation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .donation-item:last-child {
+    border-bottom: none;
+  }
+  
+  .donation-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .donation-detail {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .donation-points {
+    font-weight: bold;
+    color: #2a6041;
+  }
+  
+  .rewards-info h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .rewards-levels {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+  
+  .reward-level {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .level-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .level-requirement {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .profile-container {
+      width: 95%;
+    }
+    
+    .user-info {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .avatar {
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+    
+    .reward-info {
+      justify-content: center;
+      margin-top: 10px;
+    }
+    
+    .rewards-levels {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+  }
