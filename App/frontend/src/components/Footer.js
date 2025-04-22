@@ -5,7 +5,7 @@ function Footer() {
   // EDIT THESE VALUES TO CUSTOMIZE YOUR FOOTER
   const websiteName = "UyirUnavu";
   const currentYear = "2025";
-  const supportEmail = "support@UyirUnavu.com";
+  const tagline = "Sustainability in Every Recipe ❤️"; // Added tagline
   
   // EDIT THESE VALUES FOR TEAM LINKEDIN PROFILES
   const teamMembers = [
@@ -32,17 +32,6 @@ function Footer() {
       <div className="footer-divider"></div>
       
       <div className="footer-content">
-        <div className="footer-copyright">
-          <p>{websiteName} &copy; {currentYear} All Rights Reserved</p>
-        </div>
-        
-        <div className="footer-support">
-          <h4>Help & Support</h4>
-          <p>
-            <a href={`mailto:${supportEmail}`}>{supportEmail}</a>
-          </p>
-        </div>
-        
         <div className="footer-team">
           <h4>Our Team</h4>
           <div className="team-links">
@@ -64,6 +53,13 @@ function Footer() {
             ))}
           </div>
         </div>
+        
+        <div className="footer-copyright">
+          <p className="tagline">{tagline}</p>
+          <p>{websiteName} &copy; {currentYear} All Rights Reserved</p>
+        </div>
+        
+        
       </div>
     </footer>
   );
