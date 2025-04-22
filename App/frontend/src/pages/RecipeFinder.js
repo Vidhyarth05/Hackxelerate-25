@@ -3,6 +3,7 @@ import { fetchRecipes } from '../utils/api';
 import Home from '../components/Home';
 import DonationForm from '../components/DonationForm';
 import '../styles/RecipeFinder.css';
+import Footer from '../components/Footer';
 
 function RecipeFinder() {
   const [ingredientInput, setIngredientInput] = useState('');
@@ -83,5 +84,5 @@ function RecipeFinder() {
     </div>
   );
 }
-
+<Footer />
 export default RecipeFinder;

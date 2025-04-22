@@ -3,6 +3,7 @@ import { fetchRecipes } from '../utils/api';
 import Home from '../components/Home';
 import DonationForm from '../components/DonationForm';
 import '../styles/SimplifiedApp.css';
+import Footer from '../components/Footer';
 
 function SimplifiedApp() {
   const [ingredientInput, setIngredientInput] = useState('');
@@ -149,12 +150,8 @@ function SimplifiedApp() {
       </div>
       
       {/* Footer Section */}
-      <footer className="app-footer">
-        <div className="footer-content">
-          <p>© 2025 UyirUnavu - Reducing Food Waste, One Recipe at a Time❤️</p>
-        </div>
-      </footer>
-    </div>
+      <Footer />
+      </div>
   );
 }
 
