@@ -1,248 +1,210 @@
-/* Profile Styles */
+body.modal-open {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .profile-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    overflow-y: auto;
-    padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.profile-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  width: 450px;
+  max-width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideIn 0.4s ease-out;
+  margin: 0 auto;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
   }
-  
-  .profile-container {
-    background-color: white;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 800px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    animation: slideIn 0.3s ease-out;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  @keyframes slideIn {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
-  .profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 10;
-  }
-  
-  .profile-header h2 {
-    margin: 0;
-    color: #2a6041;
-  }
-  
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: #666;
-    transition: color 0.2s;
-  }
-  
-  .close-btn:hover {
-    color: #000;
-  }
-  
-  .profile-content {
-    padding: 20px;
-  }
-  
-  .profile-section {
-    margin-bottom: 30px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .avatar {
-    width: 80px;
-    height: 80px;
-    background-color: #2a6041;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    font-weight: bold;
-    margin-right: 20px;
-  }
-  
-  .user-details h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .reward-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .reward-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 14px;
-    margin-right: 15px;
-  }
-  
-  .beginner {
-    background-color: #e6f7ff;
-    color: #0066cc;
-  }
-  
-  .bronze {
-    background-color: #fff0e6;
-    color: #cc5200;
-  }
-  
-  .silver {
-    background-color: #f0f0f0;
-    color: #666666;
-  }
-  
-  .gold {
-    background-color: #fff9e6;
-    color: #cc9900;
-  }
-  
-  .points-display {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .points-value {
-    font-size: 22px;
-    font-weight: bold;
-    color: #2a6041;
-  }
-  
-  .points-label {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .donation-history h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  .no-donations {
-    color: #666;
-    font-style: italic;
-  }
-  
-  .donation-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .donation-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .donation-item:last-child {
-    border-bottom: none;
-  }
-  
-  .donation-title {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-  }
-  
-  .donation-detail {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .donation-points {
-    font-weight: bold;
-    color: #2a6041;
-  }
-  
-  .rewards-info h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  .rewards-levels {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-  }
-  
-  .reward-level {
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .level-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .level-requirement {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .profile-container {
-      width: 95%;
-    }
-    
-    .user-info {
-      flex-direction: column;
-      text-align: center;
-    }
-    
-    .avatar {
-      margin-right: 0;
-      margin-bottom: 15px;
-    }
-    
-    .reward-info {
-      justify-content: center;
-      margin-top: 10px;
-    }
-    
-    .rewards-levels {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-  }
+}
+
+.profile-content {
+  padding: 0;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: rgb(255, 0, 0);
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.profile-header {
+  text-align: center;
+  padding: 25px 20px;
+  background: linear-gradient(to right, #2a6041, #4caf50);
+  border-radius: 12px 12px 0 0;
+  color: white;
+}
+
+.profile-header h2 {
+  margin: 0 0 15px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.profile-header p {
+  margin: 8px 0;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.profile-section {
+  margin: 15px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.profile-section h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #4caf50;
+}
+
+.reward-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.reward-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background-color: #95a5a6;
+}
+
+.reward-badge.beginner {
+  background-color: #95a5a6;
+}
+
+.reward-badge.bronze {
+  background-color: #cd7f32;
+}
+
+.reward-badge.silver {
+  background-color: #c0c0c0;
+}
+
+.reward-badge.gold {
+  background-color: #ffd700;
+  color: #333;
+}
+
+.points-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px dashed #4caf50;
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.points-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.points-label {
+  font-size: 14px;
+  color: #555;
+}
+
+.no-donations {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px dashed #ddd;
+}
+
+.ngo-button {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 15px auto;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ngo-button:hover {
+  background: linear-gradient(135deg, #2980b9, #1a5276);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.profile-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-container::-webkit-scrollbar-thumb {
+  background: rgba(76, 175, 80, 0.5);
+  border-radius: 10px;
+}
+
+.profile-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(76, 175, 80, 0.8);
+}

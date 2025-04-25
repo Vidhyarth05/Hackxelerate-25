@@ -3,14 +3,24 @@ import { calculateHealthScore, isBeginner, getDietTag, calculateWasteReduction }
 import RecipeDetail from './RecipeDetail';
 import '../styles/Recipes.css';
 
+// In Recipes.js
 function Recipe({ recipe, userIngredients }) {
   const [showDetail, setShowDetail] = useState(false);
   
+  // Normalize recipe data to handle different property naming conventions
+  const normalizedRecipe = {
+    RecipeName: recipe.Name || recipe.RecipeName || "Unnamed Recipe",
+    Ingredients: recipe.Ingredients || "",
+    Instructions: recipe.Instructions || "",
+    CookTimeInMins: recipe.CookTime || recipe.CookTimeInMins || "?",
+    // Add other properties as needed
+  };
+  
   // Calculate scores and tags
-  const healthScore = recipe.healthScore || calculateHealthScore(recipe);
-  const dietTag = getDietTag(recipe);
+  const healthScore = recipe.healthScore || calculateHealthScore(normalizedRecipe);
+  const dietTag = getDietTag(normalizedRecipe);
   const wasteScore = userIngredients && userIngredients.length > 0 
-    ? calculateWasteReduction(userIngredients, recipe.Ingredients) 
+    ? calculateWasteReduction(userIngredients, normalizedRecipe.Ingredients) 
     : null;
   
   // Check if this is a leftover recipe
@@ -20,14 +30,13 @@ function Recipe({ recipe, userIngredients }) {
     <>
       <div className={`recipe-card ${isLeftoverRecipe ? 'leftover-recipe' : ''}`}>
         <div className="recipe-image">
-          {/* Placeholder image - in a real app, you'd use the recipe's actual image */}
           <div className="placeholder-img">🍽️</div>
         </div>
-        <h3>{recipe.RecipeName || "Unnamed Recipe"}</h3>
+        <h3>{normalizedRecipe.RecipeName}</h3>
         
         {/* Tags section */}
         <div className="recipe-tags">
-          {isBeginner(recipe) && <span className="tag beginner">Beginner</span>}
+          {isBeginner(normalizedRecipe) && <span className="tag beginner">Beginner</span>}
           <span className={`tag diet ${dietTag.toLowerCase()}`}>{dietTag}</span>
           <span className={`tag health-score score-${Math.floor(healthScore/20)}`}>
             {healthScore}/100
@@ -36,7 +45,7 @@ function Recipe({ recipe, userIngredients }) {
         </div>
         
         <div className="cook-time">
-          <span>⏱️ {recipe.CookTimeInMins || "?"} mins</span>
+          <span>⏱️ {normalizedRecipe.CookTimeInMins} mins</span>
         </div>
         
         <div className="recipe-overlay">
@@ -49,7 +58,7 @@ function Recipe({ recipe, userIngredients }) {
       {/* Recipe Detail Modal */}
       {showDetail && (
         <RecipeDetail 
-          recipe={recipe} 
+          recipe={normalizedRecipe} 
           healthScore={healthScore}
           dietTag={dietTag}
           wasteScore={wasteScore}

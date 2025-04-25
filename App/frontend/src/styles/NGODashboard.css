@@ -1,0 +1,214 @@
+/* NGODashboard.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap');
+
+.ngo-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.ngo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ngo-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #2a6041;
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  background: linear-gradient(to right, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2);
+}
+
+.logout-button:hover {
+  background: linear-gradient(to right, #c0392b, #a93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(231, 76, 60, 0.3);
+}
+
+.ngo-loading, .ngo-error {
+  text-align: center;
+  padding: 50px 30px;
+  font-size: 18px;
+  color: #666;
+}
+
+.ngo-loading {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.ngo-error {
+  color: #d32f2f;
+  background-color: #ffebee;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ngo-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.ngo-tabs button {
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #757575;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.ngo-tabs button.active {
+  color: #2a6041;
+}
+
+.ngo-tabs button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #2a6041;
+  border-radius: 3px 3px 0 0;
+}
+
+.ngo-tabs button:hover {
+  background-color: #f5f5f5;
+}
+
+.ngo-content {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+}
+
+.ngo-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #2a6041;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.donations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.donation-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.donation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.donation-card h3 {
+  margin-top: 0;
+  color: #2a6041;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.donation-card p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.donation-card strong {
+  color: #2a6041;
+}
+
+.donation-card.accepted {
+  background-color: #e8f5e9;
+  border-left: 4px solid #2a6041;
+}
+
+.accept-button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to right, #2a6041, #3a8651);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  margin-top: 15px;
+  box-shadow: 0 4px 6px rgba(42, 96, 65, 0.2);
+}
+
+.accept-button:hover {
+  background: linear-gradient(to right, #1d4b2f, #2a6041);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(42, 96, 65, 0.3);
+}
+
+.status-badge {
+  display: inline-block;
+  background-color: #2a6041;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 15px;
+  box-shadow: 0 2px 4px rgba(42, 96, 65, 0.2);
+}
+
+@media (max-width: 768px) {
+  .ngo-header h1 {
+    font-size: 2rem;
+  }
+  
+  .ngo-content {
+    padding: 15px;
+  }
+  
+  .donations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .ngo-tabs button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

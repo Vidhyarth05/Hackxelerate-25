@@ -2,10 +2,13 @@ import React from 'react';
 import '../styles/RecipeDetail.css';
 
 function RecipeDetail({ recipe, healthScore, dietTag, wasteScore, onClose }) {
-  // Split ingredients into an array for display
-  const ingredientsList = recipe.Ingredients.split(',')
-    .map(i => i.trim())
-    .filter(i => i);
+  // Safely handle Ingredients that might be undefined or empty
+  const ingredientsList = recipe.Ingredients 
+    ? recipe.Ingredients.split(',')
+        .map(i => i.trim())
+        .filter(i => i)
+    : [];
+
 
   return (
     <div className="recipe-detail-overlay">

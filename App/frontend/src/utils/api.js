@@ -1,28 +1,18 @@
+// utils/api.js
 export const fetchRecipes = async (ingredient) => {
   try {
+    // Make sure the URL matches your backend route exactly
     const response = await fetch(`http://localhost:3000/recipes?q=${ingredient}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
     const data = await response.json();
-    console.log('API Response:', data);
-    
-    // Get the recipes array
-    const recipes = data.recipes || [];
-    
-    // Remove duplicates based on recipe name
-    const uniqueRecipes = recipes.reduce((unique, recipe) => {
-      // Check if we already have this recipe name in our unique array
-      const existingRecipe = unique.find(r => r.RecipeName === recipe.RecipeName);
-      
-      // If it doesn't exist yet, add it to our unique recipes
-      if (!existingRecipe) {
-        unique.push(recipe);
-      }
-      
-      return unique;
-    }, []);
-    
-    return uniqueRecipes;
+    console.log('API response:', data); // Add logging for debugging
+    return data.recipes || [];
   } catch (error) {
-    console.error('API fetch error:', error);
+    console.error('Error fetching recipes:', error);
     return [];
   }
 };

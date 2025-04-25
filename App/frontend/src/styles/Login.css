@@ -9,7 +9,7 @@
   background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.login-box {
+.login-form {
   background-color: white;
   border-radius: 15px;
   padding: 30px;
@@ -20,7 +20,7 @@
   overflow: hidden;
 }
 
-.login-box::before {
+.login-form::before {
   content: '';
   position: absolute;
   top: 0;
@@ -30,30 +30,29 @@
   background: linear-gradient(to right, #2a6041, #4caf50);
 }
 
-.app-logo {
-  text-align: center;
-  margin-bottom: 20px;
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #888;
+  background: none;
+  border: none;
 }
 
-.app-logo img {
-  height: 60px;
-  margin-bottom: 10px;
+.close-button:hover {
+  color: #000;
 }
 
-.app-name {
-  font-size: 22px;
-  font-weight: 700;
-  color: #2a6041;
-  margin: 0;
-}
-
-.login-tabs {
+.form-tabs {
   display: flex;
   margin-bottom: 25px;
   border-bottom: 1px solid #eee;
 }
 
-.login-tab {
+.form-tabs button {
   flex: 1;
   padding: 12px;
   text-align: center;
@@ -67,11 +66,11 @@
   position: relative;
 }
 
-.login-tab.active {
+.form-tabs button.active {
   color: #2a6041;
 }
 
-.login-tab.active::after {
+.form-tabs button.active::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -82,7 +81,7 @@
   border-radius: 3px 3px 0 0;
 }
 
-.login-error {
+.error-message {
   background-color: #ffe6e6;
   border-left: 4px solid #cc0000;
   color: #cc0000;
@@ -90,10 +89,6 @@
   margin-bottom: 20px;
   border-radius: 4px;
   font-size: 14px;
-}
-
-.login-form, .signup-form {
-  margin-top: 15px;
 }
 
 .form-group {
@@ -126,14 +121,7 @@
   outline: none;
 }
 
-.form-icon {
-  position: absolute;
-  right: 12px;
-  top: 38px;
-  color: #6c757d;
-}
-
-.login-btn, .signup-btn {
+.submit-btn {
   width: 100%;
   padding: 12px;
   background: linear-gradient(to right, #2a6041, #3a8651);
@@ -148,63 +136,61 @@
   box-shadow: 0 4px 6px rgba(42, 96, 65, 0.2);
 }
 
-.login-btn:hover, .signup-btn:hover {
+.submit-btn:hover {
   background: linear-gradient(to right, #1d4b2f, #2a6041);
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(42, 96, 65, 0.3);
 }
 
-.login-footer {
+.submit-btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.form-footer {
   text-align: center;
-  margin-top: 25px;
+  margin-top: 15px;
   color: #6c757d;
   font-size: 14px;
 }
 
-.login-footer a {
+.form-footer a, .form-footer button {
   color: #2a6041;
   text-decoration: none;
   font-weight: 600;
-}
-
-.login-divider {
-  display: flex;
-  align-items: center;
-  margin: 20px 0;
-  color: #6c757d;
-}
-
-.login-divider::before,
-.login-divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid #dee2e6;
-}
-
-
-.social-btn {
-  border: 1px solid #dee2e6;
-  background: #fff;
-  border-radius: 5px;
-  padding: 10px 15px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s;
+  padding: 0;
+  font-size: 14px;
 }
 
-.social-btn:hover {
-  background-color: #f8f9fa;
-  transform: translateY(-2px);
+.form-footer a:hover, .form-footer button:hover {
+  text-decoration: underline;
+}
+
+/* Animation for form appearance */
+@keyframes animateModal {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.login-form {
+  animation-name: animateModal;
+  animation-duration: 0.3s;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .login-box {
+  .login-form {
     padding: 25px;
   }
 }
 
 @media (max-width: 480px) {
-  .login-tab {
+  .form-tabs button {
     font-size: 14px;
     padding: 10px;
   }

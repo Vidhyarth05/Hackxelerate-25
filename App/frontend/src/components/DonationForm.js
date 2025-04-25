@@ -35,46 +35,34 @@ function DonationForm({ updatePoints = true }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  // Updated handleSubmit function in DonationForm.js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  
+  // Get user ID from localStorage
+  const userId = localStorage.getItem('userId');
+  
+  try {
+    const response = await fetch('http://localhost:3000/donate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ...formData,
+        userId // Include userId in the request
+      })
+    });
     
-    try {
-      const response = await fetch('http://localhost:3000/donate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        // Calculate points based on food item complexity
-        const earnedPoints = calculateDonationPoints(formData.foodItem);
-        setPointsEarned(earnedPoints);
-        
-        // Update points in localStorage if updatePoints prop is true
-        if (updatePoints) {
-          updateUserPoints(earnedPoints);
-          addDonationToHistory(formData.foodItem, earnedPoints);
-        }
-        
-        setSubmitted(true);
-        setFormData({
-          foodItem: '',
-          contactInfo: '',
-          notes: ''
-        });
-      } else {
-        setError(data.error || 'Failed to submit donation');
-      }
-    } catch (err) {
-      // For demo purposes, proceed as if donation was successful even if API fails
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Calculate points based on food item complexity
       const earnedPoints = calculateDonationPoints(formData.foodItem);
       setPointsEarned(earnedPoints);
       
+      // Update points in localStorage if updatePoints prop is true
       if (updatePoints) {
         updateUserPoints(earnedPoints);
         addDonationToHistory(formData.foodItem, earnedPoints);
@@ -86,10 +74,30 @@ function DonationForm({ updatePoints = true }) {
         contactInfo: '',
         notes: ''
       });
-      
-      console.error('Donation submission error:', err);
+    } else {
+      setError(data.error || 'Failed to submit donation');
     }
-  };
+  } catch (err) {
+    // For demo purposes, proceed as if donation was successful even if API fails
+    const earnedPoints = calculateDonationPoints(formData.foodItem);
+    setPointsEarned(earnedPoints);
+    
+    if (updatePoints) {
+      updateUserPoints(earnedPoints);
+      addDonationToHistory(formData.foodItem, earnedPoints);
+    }
+    
+    setSubmitted(true);
+    setFormData({
+      foodItem: '',
+      contactInfo: '',
+      notes: ''
+    });
+    
+    console.error('Donation submission error:', err);
+  }
+};
+
   
   // Calculate points based on the donation (simple algorithm - could be more complex)
   const calculateDonationPoints = (foodItems) => {

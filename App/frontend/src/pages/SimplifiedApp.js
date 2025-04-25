@@ -27,8 +27,18 @@ function SimplifiedApp() {
     if (loggedIn) {
       setIsLoggedIn(true);
       setUserName(localStorage.getItem('userName') || 'User');
+      
+      // Check user type and redirect if needed
+      const userType = localStorage.getItem('userType');
+      if (userType === 'admin') {
+        window.location.href = '/admin';
+      } else if (userType === 'ngo') {
+        window.location.href = '/ngo';
+      }
     }
   }, []);
+  
+
 
   // Handle scroll events
   useEffect(() => {
@@ -61,15 +71,41 @@ function SimplifiedApp() {
     }
   };
 
-  const handleLogin = (username) => {
+  const handleLogin = (user) => {
     setIsLoggedIn(true);
-    setUserName(username);
-    // Auto-scroll to the search section after login
+    
+    // Check if user is a string or an object and extract username accordingly
+    if (typeof user === 'object' && user !== null) {
+      setUserName(user.username || 'User');
+      
+      // Store user info in localStorage
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userName', user.username || 'User');
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('userType', user.userType || 'normal');
+      
+      // Redirect based on user type
+      if (user.userType === 'admin') {
+        window.location.href = '/admin';
+        return;
+      } else if (user.userType === 'ngo'){
+        window.location.href = '/ngo';
+        return;
+      }
+    } else {
+      // Handle case where user is already a string
+      setUserName(user || 'User');
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userName', user || 'User');
+    }
+    
+    // Auto-scroll to the search section after login (only for normal users)
     setTimeout(() => {
       scrollToSearch();
     }, 300);
   };
-
+  
+  
   const handleLogout = () => {
     // Clear localStorage items
     localStorage.removeItem('isLoggedIn');
@@ -113,14 +149,22 @@ function SimplifiedApp() {
 
   const searchRecipes = async () => {
     if (!ingredientTags.length) return;
-    
     setLoading(true);
-    setUserIngredients(ingredientTags); // Store user ingredients for reuse suggestions
+    setUserIngredients(ingredientTags);
     
-    const result = await fetchRecipes(ingredientTags.join(','));
-    setRecipes(result);
-    setLoading(false);
+    try {
+      console.log('Searching for ingredients:', ingredientTags.join(','));
+      const result = await fetchRecipes(ingredientTags.join(','));
+      console.log('Search results:', result);
+      setRecipes(result);
+    } catch (error) {
+      console.error('Error in recipe search:', error);
+      // Optionally set an error state here
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -137,7 +181,7 @@ function SimplifiedApp() {
           {isLoggedIn ? (
             <>
               <button className="profile-btn" onClick={() => setShowProfile(true)}>
-                <span className="profile-icon">{userName.charAt(0).toUpperCase()}</span>
+                <span className="profile-icon">{String(userName || '').charAt(0).toUpperCase()}</span>
                 <span className="profile-name">{userName}</span>
               </button>
               <button className="logout-btn" onClick={handleLogout}>Logout</button>

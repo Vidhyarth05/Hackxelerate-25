@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onClose }) {
   const [loginForm, setLoginForm] = useState({
     username: '',
     password: '',
@@ -14,184 +14,236 @@ function Login({ onLogin }) {
   });
   const [isSignup, setIsSignup] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
-    setLoginForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setLoginForm(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSignupChange = (e) => {
     const { name, value } = e.target;
-    setSignupForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setSignupForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     
-    // Simple validation
+    // Validate input
     if (!loginForm.username || !loginForm.password) {
       setError('Please fill in all fields');
+      setLoading(false);
       return;
     }
-
-    // Mock authentication (in a real app, this would call an API)
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', loginForm.username);
-    localStorage.setItem('userPoints', '0'); // Initialize points
     
-    if (onLogin) {
-      onLogin(loginForm.username);
+    try {
+      // Call the backend API for authentication
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: loginForm.username,
+          password: loginForm.password
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Store user data in localStorage
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('userName', data.user.username);
+        localStorage.setItem('userType', data.user.userType);
+        localStorage.setItem('userPoints', data.user.points || '0');
+        
+        // Call the onLogin callback with the user data
+        if (onLogin) {
+          onLogin(data.user);
+        }
+      } else {
+        setError(data.message || 'Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Network error. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     
-    // Simple validation
+    // Validate input
     if (!signupForm.fullName || !signupForm.email || !signupForm.newUsername || !signupForm.newPassword) {
       setError('Please fill in all fields');
+      setLoading(false);
       return;
     }
-
-    // Mock user creation (in a real app, this would call an API)
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', signupForm.newUsername);
-    localStorage.setItem('userPoints', '0'); // Initialize points
     
-    if (onLogin) {
-      onLogin(signupForm.newUsername);
+    if (signupForm.newPassword.length < 6) {
+      setError('Password must be at least 6 characters long');
+      setLoading(false);
+      return;
+    }
+    
+    try {
+      // Call the backend API for registration
+      const response = await fetch('http://localhost:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: signupForm.newUsername,
+          password: signupForm.newPassword,
+          name: signupForm.fullName,
+          email: signupForm.email,
+          // All new users are normal users by default
+          userType: 'normal'
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Show success message and switch to login form
+        alert('Registration successful! Please log in with your new account.');
+        setIsSignup(false);
+        setLoginForm({
+          username: signupForm.newUsername,
+          password: ''
+        });
+        setSignupForm({
+          fullName: '',
+          email: '',
+          newUsername: '',
+          newPassword: '',
+        });
+      } else {
+        setError(data.message || 'Registration failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('Network error. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <div className="app-logo">
-          <div className="app-name">Ready To Cook ?</div>
-        </div>
+      <div className="login-form">
+        <button className="close-button" onClick={onClose}>×</button>
         
-        <div className="login-tabs">
+        <div className="form-tabs">
           <button 
-            className={`login-tab ${!isSignup ? 'active' : ''}`}
+            className={!isSignup ? 'active' : ''} 
             onClick={() => setIsSignup(false)}
           >
             Login
           </button>
           <button 
-            className={`login-tab ${isSignup ? 'active' : ''}`}
+            className={isSignup ? 'active' : ''} 
             onClick={() => setIsSignup(true)}
           >
             Sign Up
           </button>
         </div>
         
-        {error && <div className="login-error">{error}</div>}
+        {error && <div className="error-message">{error}</div>}
         
         {!isSignup ? (
-          <>
-            <form onSubmit={handleLoginSubmit} className="login-form">
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={loginForm.username}
-                  onChange={handleLoginChange}
-                  placeholder="Enter your username"
-                />
-                <span className="form-icon">👤</span>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={loginForm.password}
-                  onChange={handleLoginChange}
-                  placeholder="Enter your password"
-                />
-                <span className="form-icon">🔒</span>
-              </div>
-              
-              <button type="submit" className="login-btn">Let's Cook !</button>
-            </form>
-            
-            
-            
-            <div className="login-footer">
-              <p>Forgot your password? <a href="#">Reset it here</a></p>
-            </div>
-          </>
-        ) : (
-          <form onSubmit={handleSignupSubmit} className="signup-form">
+          <form onSubmit={handleLoginSubmit}>
             <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={signupForm.fullName}
-                onChange={handleSignupChange}
+              <label>Username</label>
+              <input 
+                type="text" 
+                name="username" 
+                value={loginForm.username} 
+                onChange={handleLoginChange} 
+                placeholder="Enter your username"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Password</label>
+              <input 
+                type="password" 
+                name="password" 
+                value={loginForm.password} 
+                onChange={handleLoginChange} 
+                placeholder="Enter your password"
+              />
+            </div>
+            
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
+            
+            <p className="form-footer">
+              Forgot your password? <a href="#reset">Reset it here</a>
+            </p>
+          </form>
+        ) : (
+          <form onSubmit={handleSignupSubmit}>
+            <div className="form-group">
+              <label>Full Name</label>
+              <input 
+                type="text" 
+                name="fullName" 
+                value={signupForm.fullName} 
+                onChange={handleSignupChange} 
                 placeholder="Enter your full name"
               />
-              <span className="form-icon">👤</span>
             </div>
             
             <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={signupForm.email}
-                onChange={handleSignupChange}
+              <label>Email</label>
+              <input 
+                type="email" 
+                name="email" 
+                value={signupForm.email} 
+                onChange={handleSignupChange} 
                 placeholder="Enter your email"
               />
-              <span className="form-icon">✉️</span>
             </div>
             
             <div className="form-group">
-              <label htmlFor="newUsername">Username</label>
-              <input
-                type="text"
-                id="newUsername"
-                name="newUsername"
-                value={signupForm.newUsername}
-                onChange={handleSignupChange}
+              <label>Username</label>
+              <input 
+                type="text" 
+                name="newUsername" 
+                value={signupForm.newUsername} 
+                onChange={handleSignupChange} 
                 placeholder="Choose a username"
               />
-              <span className="form-icon">🆔</span>
             </div>
             
             <div className="form-group">
-              <label htmlFor="newPassword">Password</label>
-              <input
-                type="password"
-                id="newPassword"
-                name="newPassword"
-                value={signupForm.newPassword}
-                onChange={handleSignupChange}
-                placeholder="Choose a password"
+              <label>Password</label>
+              <input 
+                type="password" 
+                name="newPassword" 
+                value={signupForm.newPassword} 
+                onChange={handleSignupChange} 
+                placeholder="Choose a password (min 6 characters)"
               />
-              <span className="form-icon">🔒</span>
             </div>
             
-            <button type="submit" className="signup-btn">Create Account</button>
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? 'Creating Account...' : 'Create Account'}
+            </button>
             
-            <div className="login-footer">
-              <p>By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
-            </div>
+            <p className="form-footer">
+              Already have an account? <button type="button" onClick={() => setIsSignup(false)}>Login here</button>
+            </p>
           </form>
         )}
       </div>
